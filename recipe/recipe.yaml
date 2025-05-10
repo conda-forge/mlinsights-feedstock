@@ -27,6 +27,7 @@ requirements:
     - python
     - scikit-learn
     - scipy
+    - setuptools
   run:
     - cython
     - matplotlib-base
