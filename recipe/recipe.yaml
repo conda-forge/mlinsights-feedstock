@@ -1,22 +1,25 @@
-{% set name = "mlinsights" %}
-{% set version = "0.3.543" %}
+schema_version: 1
 
+context:
+  name: mlinsights
+  version: 0.3.543
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: ${{ name|lower }}
+  version: ${{ version }}
 
 source:
   url: https://github.com/sdpython/mlinsights/archive/refs/tags/v540.tar.gz  # Unfortunately the PyPI releases don't contain a license file and the GitHub tags don't match the PyPI releases
   sha256: f5b4c9a71bfeef17954646dc58827eb50a59253e6bc99a398227b2a421e49727
 
 build:
-  number: 2
-  script: {{ PYTHON }} -m pip install . -vv
+  number: 3
+  script: ${{ PYTHON }} -m pip install . -vv
 
 requirements:
   build:
-    - {{ compiler('c') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
   host:
     - cython
     - pip
@@ -24,6 +27,7 @@ requirements:
     - python
     - scikit-learn
     - scipy
+    - setuptools
   run:
     - cython
     - matplotlib-base
@@ -34,20 +38,22 @@ requirements:
     - scikit-learn >=0.22.1
     - scipy
 
-test:
-  imports:
-    - mlinsights
-    - mlinsights.helpers
-  commands:
-    - pip check
-  requires:
-    - pip
+tests:
+  - python:
+      imports:
+        - mlinsights
+        - mlinsights.helpers
+  - requirements:
+      run:
+        - pip
+    script:
+      - pip check
 
 about:
-  home: http://www.xavierdupre.fr/app/mlinsights/helpsphinx/index.html
   summary: Extends scikit-learn with a couple of new models, transformers, metrics, plotting.
   license: MIT
   license_file: LICENSE.txt
+  homepage: http://www.xavierdupre.fr/app/mlinsights/helpsphinx/index.html
 
 extra:
   recipe-maintainers:
