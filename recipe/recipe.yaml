@@ -14,6 +14,8 @@ source:
 
 build:
   number: 3
+  skip:
+    - match(python, ">=3.13")  # scikit-learn <1.4 not available for Python 3.13+
   script: ${{ PYTHON }} -m pip install . -vv
 
 requirements:
@@ -25,7 +27,7 @@ requirements:
     - pip
     - pyquickhelper
     - python
-    - scikit-learn
+    - scikit-learn >=0.22.1,<1.4
     - scipy
     - setuptools
   run:
@@ -35,7 +37,7 @@ requirements:
     - pandas
     - pandas-streaming
     - python
-    - scikit-learn >=0.22.1
+    - scikit-learn >=0.22.1,<1.4
     - scipy
 
 tests:
