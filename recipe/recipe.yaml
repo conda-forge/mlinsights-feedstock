@@ -1,0 +1,60 @@
+schema_version: 1
+
+context:
+  name: mlinsights
+  version: 0.5.3
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/m/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: 2f2be262dd37a98134d0ce0a61bf5f9df0b389e2f2388735c9df3a16e2f267b4
+
+build:
+  number: 0
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+    - cmake
+  host:
+    - cython >=3.0.10
+    - numpy >=2.0
+    - pip
+    - pybind11 >=3
+    - python
+    - scikit-learn >=1.3.0
+    - scipy
+    - setuptools
+    - wheel
+  run:
+    - numpy
+    - onnx >=1.14.0
+    - python
+    - scipy
+
+tests:
+  - python:
+      imports:
+        - mlinsights
+        - mlinsights.helpers
+  - requirements:
+      run:
+        - pip
+    script:
+      - pip check
+
+about:
+  summary: Extends the list of supported operators in onnx reference implementation and onnxruntime, or implements faster versions in C++.
+  license: MIT
+  license_file: LICENSE.txt
+  homepage: https://sdpython.github.io/doc/mlinsights/dev/
+
+extra:
+  recipe-maintainers:
+    - janjagusch
